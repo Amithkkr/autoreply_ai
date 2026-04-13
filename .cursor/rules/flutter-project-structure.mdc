@@ -1,0 +1,16 @@
+---
+description: Flutter demo structure — where code lives and how layers connect
+globs: lib/**/*.dart,pubspec.yaml,assets/**/*
+alwaysApply: false
+---
+
+# Project structure
+
+- **Features** live under `lib/ui/<feature>/` (page + MobX store). New screens use `@RoutePage()` and are registered in `lib/router/app_router.dart`.
+- **Data**: Retrofit in `lib/data/remote/`, models in `lib/data/model/`, abstract repos in `repository/`, impl in `repository_impl/`.
+- **Core**: DI in `lib/core/locator/locator.dart`, Dio in `lib/core/api/`, Hive `AppDB` in `lib/core/db/`.
+- **Theme**: `assets/style_tokens.json` is the design source; load via `DesignTokens.load()` in `main.dart`; use `buildAppTheme` and `lib/theme/` — do not hardcode a second palette without updating JSON.
+- **Generated files** (`*.g.dart`, `*.gr.dart`): never edit by hand; run `dart run build_runner build --delete-conflicting-outputs`.
+- **Localization**: strings in `lib/l10n/*.arb`, generated `S` in `lib/generated/l10n.dart`.
+
+When moving folders or adding layers, update `PROJECT_STRUCTURE.md` and `.cursor/skills/flutter-structure-*/SKILL.md` per the master skill maintenance table.

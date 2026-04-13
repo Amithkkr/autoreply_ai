@@ -1,0 +1,16 @@
+---
+description: Dart/Flutter basics for this repo (async main, DI, UI patterns)
+globs: "**/*.dart"
+alwaysApply: false
+---
+
+# Flutter / Dart conventions
+
+- **SDK**: `>=3.8.0 <4.0.0` — use null safety, prefer `final`, avoid `dynamic` unless JSON boundaries.
+- **Imports**: `package:flutter_demo_structure/...` for app code; group `dart:`, `package:`, relative.
+- **Async `main`**: `WidgetsFlutterBinding.ensureInitialized()` first, then `await DesignTokens.load()`, `await setupLocator()`, `await locator.isReady<AppDB>()` before `runApp`.
+- **State**: MobX for feature stores — `Observer` for reactive UI; keep API calls in `@action` methods, not in `build`.
+- **Navigation**: `auto_route` only — `context.router.push` / `replace`; route classes from `app_router.gr.dart`.
+- **Networking**: use registered `Dio` + Retrofit clients; respect encryption interceptors — do not bypass with raw `Dio()` for app APIs.
+- **UI**: prefer `Theme.of(context)` and tokens over magic numbers; use `ScreenUtil` (`.w`, `.h`, `.sp`) for responsive sizing.
+- **Errors**: map Dio failures through project utilities / `S` strings; avoid bare `print` in library code (use `debugPrint` in debug paths).

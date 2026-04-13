@@ -61,6 +61,11 @@ lib/
 ├── service/
 │   └── enc_service.dart             # AES (encrypt package + crypto SHA-256 key derivation)
 │
+├── theme/                       # Design tokens → ThemeData
+│   ├── design_tokens.dart         # Loads assets/style_tokens.json
+│   ├── app_theme.dart             # buildAppTheme() Material 3 + Google Fonts Inter
+│   └── theme_context.dart         # context.designTokens extension
+│
 ├── ui/                          # Feature-oriented UI
 │   └── login/
 │       ├── login_page.dart          # @RoutePage; Observer + button triggers login
@@ -94,7 +99,34 @@ lib/
 
 - `assets/`, `assets/fonts/`, `assets/image/`, `assets/image/icons/`
 - Custom font: **Rotunda** (Bold, weight 700) from `assets/fonts/Rotunda-Bold.otf`
-- Repo also contains `assets/style_tokens.json` (referenced as a generic asset root)
+- **`assets/style_tokens.json`** — semantic colors, spacing, radii, typography (loaded at startup; see **Design & theme** below).
+
+---
+
+## Design & theme
+
+| Piece | Role |
+|-------|------|
+| `assets/style_tokens.json` | Source of truth for palette, spacing keys (`xs`–`xxl`), corner radii, named text styles. |
+| `lib/theme/design_tokens.dart` | `DesignTokens.load()` after `WidgetsFlutterBinding.ensureInitialized()`; exposes `colors`, `spacing`, `radius`, `typography`. |
+| `lib/theme/app_theme.dart` | `buildAppTheme(DesignTokens)` — `ColorScheme`, buttons, inputs, cards; **Inter** via `google_fonts`. |
+| `lib/main.dart` | Calls `await DesignTokens.load()` then uses `theme: buildAppTheme(DesignTokens.instance)`. |
+
+**Rotunda** remains available from `pubspec.yaml` fonts for explicit use (e.g. marketing headings).
+
+---
+
+## Cursor agent skills & rules (maintenance)
+
+Agent-oriented docs live next to the repo so structure and design stay aligned with code:
+
+| Resource | Path |
+|----------|------|
+| **Master skill** (index + when to update) | `.cursor/skills/flutter-structure-master/SKILL.md` |
+| Sub-skills | `.cursor/skills/flutter-structure-architecture/`, `flutter-structure-design/`, `flutter-structure-codegen/`, `flutter-structure-platform/` |
+| **Rules** | `.cursor/rules/flutter-project-structure.mdc`, `flutter-dart-conventions.mdc`, `flutter-core-always.mdc` |
+
+When you change layout, tokens, codegen, or iOS/Android build setup, update **`PROJECT_STRUCTURE.md`** and the matching **sub-skill** (see the master skill maintenance table).
 
 ---
 
@@ -250,10 +282,11 @@ Other tooling (from `pubspec.yaml`):
 
 1. **`main.dart`**  
    - `WidgetsFlutterBinding.ensureInitialized()`  
+   - `await DesignTokens.load()` (reads `assets/style_tokens.json`)  
    - `setupLocator()` then `await locator.isReady<AppDB>()`  
    - Portrait-only orientation  
    - `runApp(MyApp(appRouter: locator<AppRouter>()))`  
-   - `ScreenUtilInit` wraps `MaterialApp.router` with `routerConfig`, theme, and localization delegates (`S.delegate` + Flutter globals).
+   - `ScreenUtilInit` wraps `MaterialApp.router` with `routerConfig`, **`buildAppTheme(DesignTokens.instance)`**, and localization delegates (`S.delegate` + Flutter globals).
 
 2. **`setupLocator()`** (`lib/core/locator/locator.dart`)  
    - Initializes **Hive** on disk (`path_provider`; Android vs iOS directory).  
@@ -294,7 +327,7 @@ Other tooling (from `pubspec.yaml`):
 | Area | Files | Notes |
 |------|--------|--------|
 | API envelope | `core/api/base_response/base_response.dart` | Generic `BaseResponse<T>` with `code` / `message` / `data`; `isOk` checks codes `1` or `2`. |
-| Errors | `core/exceptions/dio_exception_util.dart` | Localized Dio mapping; on **401** calls `appRouter.replaceAll([const StarterRoute()])`. **`StarterRoute` is not defined** in the current `app_router.gr.dart` (only **`LoginRoute`** exists). Fix this before using this helper, or it will not compile when imported. |
+| Errors | `core/exceptions/dio_exception_util.dart` | Localized Dio mapping; on **401** clears session and `replaceAll([const LoginRoute()])`. |
 | Uploads | `data/remote/upload_file.dart` | **`http`** PUT binary body. |
 | Social | `util/social_login.dart` | Example Twitter/Apple/Facebook/Firebase flows; keys and URLs are placeholders. |
 | Widgets | `lib/widget/*` | Reusable loading/error/debounce/toast helpers. |

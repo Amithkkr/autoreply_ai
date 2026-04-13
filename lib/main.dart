@@ -7,6 +7,8 @@ import 'package:flutter_demo_structure/core/db/app_db.dart';
 import 'package:flutter_demo_structure/core/locator/locator.dart';
 import 'package:flutter_demo_structure/generated/l10n.dart';
 import 'package:flutter_demo_structure/router/app_router.dart';
+import 'package:flutter_demo_structure/theme/app_theme.dart';
+import 'package:flutter_demo_structure/theme/design_tokens.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,6 +17,7 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      await DesignTokens.load();
       await setupLocator();
       await locator.isReady<AppDB>();
 
@@ -50,10 +53,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       builder: (context, child) => MaterialApp.router(
         title: 'Flutter Structure Test',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: Colors.blue,
-        ),
+        theme: buildAppTheme(DesignTokens.instance),
         debugShowCheckedModeBanner: false,
         routerConfig: appRouter.config(),
         localizationsDelegates: const [
