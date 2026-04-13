@@ -1,0 +1,82 @@
+{
+  "colors": {
+    "primary": "#00C444",
+    "onPrimary": "#FFFFFF",
+    "secondary": "#F0FFF5",
+    "onSecondary": "#007A33",
+    "tertiary": "#00A86B",
+    "onTertiary": "#FFFFFF",
+    "background": "#FFFFFF",
+    "onBackground": "#0F1722",
+    "surface": "#FFFFFF",
+    "onSurface": "#0F1722",
+    "surfaceVariant": "#FBFBFB",
+    "onSurfaceVariant": "#9AA0A6",
+    "outline": "#E1E4E8",
+    "outlineVariant": "#00000014",
+    "error": "#FF3B30",
+    "onError": "#FFFFFF"
+  },
+  "spacing": {
+    "xs": 4.0,
+    "s": 8.0,
+    "m": 16.0,
+    "l": 24.0,
+    "xl": 32.0,
+    "xxl": 48.0
+  },
+  "radius": {
+    "s": 6.0,
+    "md": 8.0,
+    "lg": 10.0,
+    "xl": 12.0,
+    "xxl": 24.0,
+    "full": 999.0
+  },
+  "typography": {
+    "displayLg": {
+      "fontFamily": "Inter",
+      "fontSize": 28.0,
+      "fontWeight": "bold",
+      "letterSpacing": -0.5,
+      "height": 1.1
+    },
+    "displayMd": {
+      "fontFamily": "Inter",
+      "fontSize": 24.0,
+      "fontWeight": "bold",
+      "letterSpacing": -0.5,
+      "height": 1.2
+    },
+    "headlineSm": {
+      "fontFamily": "Inter",
+      "fontSize": 20.0,
+      "fontWeight": "bold"
+    },
+    "titleLg": {
+      "fontFamily": "Inter",
+      "fontSize": 22.0,
+      "fontWeight": "w700"
+    },
+    "titleMd": {
+      "fontFamily": "Inter",
+      "fontSize": 16.0,
+      "fontWeight": "w600"
+    },
+    "bodyLg": {
+      "fontFamily": "Inter",
+      "fontSize": 16.0,
+      "fontWeight": "normal"
+    },
+    "bodyMd": {
+      "fontFamily": "Inter",
+      "fontSize": 14.0,
+      "fontWeight": "normal"
+    },
+    "labelMd": {
+      "fontFamily": "Inter",
+      "fontSize": 12.0,
+      "fontWeight": "w500"
+    }
+  }
+}
