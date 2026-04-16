@@ -21,7 +21,8 @@ description: >-
 
 - **get_it** singleton: `lib/core/locator/locator.dart` — `setupLocator()` registers `AppDB`, `AppRouter`, `Dio`, `AuthApi`, `EncService`, `AuthRepoImpl` factory.
 - Async singleton: `AppDB` — await `locator.isReady<AppDB>()` after `setupLocator()` in `main.dart`.
-- Repos: prefer constructor injection via locator; global `authRepo` exists for stores—keep pattern consistent per feature.
+- Hive bootstraps in `locator.dart` using `getApplicationDocumentsDirectory()` on Android and `getLibraryDirectory()` on iOS, then registers `UserDataAdapter()`.
+- Repos: `AuthRepoImpl` is registered in `GetIt`, and the repo currently also exposes a global `authRepo` shortcut from `auth_repo_impl.dart`. Keep future features consistent within the same feature flow.
 
 ## API flow
 
@@ -29,6 +30,7 @@ description: >-
 - **Retrofit** clients in `lib/data/remote/*_api.dart` with `part '*.g.dart'`.
 - Responses wrapped in **`BaseResponse<T>`** (`lib/core/api/base_response/`).
 - **Repository impl** calls API only; mapping/error policy stays in one place.
+- `EncService` is registered as a lazy singleton and is available to encryption-aware interceptors or services.
 
 ## Adding a feature (checklist)
 
