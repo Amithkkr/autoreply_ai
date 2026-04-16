@@ -123,10 +123,10 @@ Agent-oriented docs live next to the repo so structure and design stay aligned w
 | Resource | Path |
 |----------|------|
 | **Master skill** (index + when to update) | `.cursor/skills/flutter-structure-master/SKILL.md` |
-| Sub-skills | `.cursor/skills/flutter-structure-architecture/`, `flutter-structure-design/`, `flutter-structure-codegen/`, `flutter-structure-platform/` |
+| Sub-skills | `.cursor/skills/flutter-structure-architecture/`, `flutter-structure-design/`, `flutter-structure-model-class/`, `flutter-structure-widget/`, `flutter-structure-codegen/`, `flutter-structure-platform/` |
 | **Rules** | `.cursor/rules/flutter-project-structure.mdc`, `flutter-dart-conventions.mdc`, `flutter-core-always.mdc` |
 
-When you change layout, tokens, codegen, or iOS/Android build setup, update **`PROJECT_STRUCTURE.md`** and the matching **sub-skill** (see the master skill maintenance table).
+When you change layout, tokens, model patterns, shared widgets/utilities, codegen, or iOS/Android build setup, update **`PROJECT_STRUCTURE.md`** and the matching **sub-skill** (see the master skill maintenance table).
 
 ---
 
