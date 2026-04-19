@@ -46,7 +46,9 @@ dependencies:
   dio: ^5.9.2
   retrofit: ^4.9.2
   json_annotation: ^4.10.0
-  connectivity_plus: ^7.1.0
+  # 7.1.1+ iOS code uses NWPath.isUltraConstrained (Xcode 16.2+ / iOS 18.2 SDK);
+  # stay on 6.x until the team standardizes on a newer Xcode.
+  connectivity_plus: ^6.0.5
   pretty_dio_logger: ^1.3.1
 
   # encryption

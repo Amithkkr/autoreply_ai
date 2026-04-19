@@ -1,11 +1,48 @@
-include ':app'
+pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        file("local.properties").withInputStream { properties.load(it) }
+        def flutterSdkPath = properties.getProperty("flutter.sdk")
+        assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+        return flutterSdkPath
+    }()
 
-def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
-def properties = new Properties()
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
-assert localPropertiesFile.exists()
-localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
-def flutterSdkPath = properties.getProperty("flutter.sdk")
-assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
-apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+plugins {
+    id "dev.flutter.flutter-gradle-plugin" apply false
+    id "com.android.application" version "8.9.1" apply false
+    id "org.jetbrains.kotlin.android" version "2.1.0" apply false
+}
+
+// Include Flutter plugin projects from .flutter-plugins-dependencies
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins-dependencies')
+if (pluginsFile.exists()) {
+    def pluginsJson = new groovy.json.JsonSlurper().parseText(pluginsFile.text)
+    def androidPlugins = pluginsJson?.plugins?.android ?: []
+
+    androidPlugins.each { plugin ->
+        def pluginName = plugin.name
+        def pluginPath = plugin.path
+        def nativeBuild = plugin.native_build
+
+        if (nativeBuild == null || nativeBuild) {
+            def pluginAndroidDir = new File(pluginPath, 'android')
+            if (pluginAndroidDir.exists()) {
+                include ":${pluginName}"
+                project(":${pluginName}").projectDir = pluginAndroidDir
+            }
+        }
+    }
+}
+
+include ":app"
