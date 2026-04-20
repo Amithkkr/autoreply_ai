@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "544864422423",
+    "project_id": "ai-exam-c2f34",
+    "storage_bucket": "ai-exam-c2f34.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544864422423:android:446c12d330b5b21e652a52",
+        "android_client_info": {
+          "package_name": "com.hyperlink.autoreply_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmoQQSne8I5nLjD3egcVg17Qht4h3nhAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

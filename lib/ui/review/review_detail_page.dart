@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/service/openai_reply_service.dart';
 import 'package:autoreply_ai/ui/review/review_mock_store.dart';
 import 'package:autoreply_ai/ui/review/review_models.dart';
 
@@ -17,6 +21,7 @@ class ReviewDetailPage extends StatefulWidget {
 
 class _ReviewDetailPageState extends State<ReviewDetailPage> {
   final _replyController = TextEditingController();
+  final OpenAIReplyService _openAIReplyService = locator<OpenAIReplyService>();
   bool _isGenerating = false;
 
   @override
@@ -118,9 +123,11 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                     ],
                     selected: {review.selectedTone},
                     onSelectionChanged: (selected) {
-                      ReviewMockStore.instance.updateTone(
-                        review.id,
-                        selected.first,
+                      unawaited(
+                        ReviewMockStore.instance.updateTone(
+                          review.id,
+                          selected.first,
+                        ),
                       );
                     },
                   ),
@@ -147,7 +154,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                 minLines: 8,
                 maxLines: 10,
                 onChanged: (value) {
-                  ReviewMockStore.instance.updateDraft(review.id, value);
+                  unawaited(ReviewMockStore.instance.updateDraft(review.id, value));
                 },
                 decoration: InputDecoration(
                   hintText: _isGenerating
@@ -226,9 +233,59 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
 
   Future<void> _generateReply(String id) async {
     setState(() => _isGenerating = true);
-    await Future<void>.delayed(const Duration(milliseconds: 650));
-    ReviewMockStore.instance.generateReply(id);
-    if (mounted) setState(() => _isGenerating = false);
+    try {
+      final review = ReviewMockStore.instance.byId(id);
+      if (review == null) return;
+
+      final generated = await _openAIReplyService.generateReply(
+        reviewText: review.comment,
+        tone: review.selectedTone,
+      );
+
+      final draft =
+          generated ??
+          _openAIReplyService.buildFallbackReply(
+            review: review.comment,
+            tone: review.selectedTone,
+          );
+
+      await ReviewMockStore.instance.setGeneratedReply(id, draft);
+
+      if (mounted && generated == null && _openAIReplyService.isConfigured) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OpenAI generation failed. Used fallback template.'),
+          ),
+        );
+      }
+      if (mounted && !_openAIReplyService.isConfigured) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'OPENAI_API_KEY not configured. Using fallback template.',
+            ),
+          ),
+        );
+      }
+    } catch (_) {
+      final review = ReviewMockStore.instance.byId(id);
+      if (review != null) {
+        final fallback = _openAIReplyService.buildFallbackReply(
+          review: review.comment,
+          tone: review.selectedTone,
+        );
+        await ReviewMockStore.instance.setGeneratedReply(id, fallback);
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Something went wrong. Used fallback template.'),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isGenerating = false);
+    }
   }
 
   Future<void> _approveReply(String id) async {
@@ -271,7 +328,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
     );
 
     if (shouldApprove ?? false) {
-      ReviewMockStore.instance.approveReply(id);
+      await ReviewMockStore.instance.approveReply(id);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Reply approved and posted')),

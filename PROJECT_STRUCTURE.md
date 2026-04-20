@@ -17,7 +17,7 @@ This document describes the **autoreply_ai** app: folder layout, **pubspec** lib
 | Local storage | Hive CE |
 | DI | get_it |
 
-The current prototype flow focuses on an **AI-powered review and reply UI** with separate User/Admin experiences and mock local state.
+The current prototype flow focuses on an **AI-powered review and reply UI** with separate User/Admin experiences, Firebase anonymous auth, and Firestore-backed review state through Cloud Functions.
 
 ---
 
@@ -25,7 +25,8 @@ The current prototype flow focuses on an **AI-powered review and reply UI** with
 
 ```
 lib/
-├── main.dart                    # Entry: zone guard, locator, ScreenUtil, MaterialApp.router
+├── main.dart                    # Entry: Firebase init, zone guard, locator, ScreenUtil, MaterialApp.router
+├── firebase_options.dart        # Generated FlutterFire options (Android/iOS/Web)
 ├── hive_registrar.g.dart        # Generated Hive type registration (build_runner)
 │
 ├── core/                        # App-wide infrastructure
@@ -59,7 +60,8 @@ lib/
 │   └── app_router.gr.dart           # Generated route classes (e.g. LoginRoute)
 │
 ├── service/
-│   └── enc_service.dart             # AES (encrypt package + crypto SHA-256 key derivation)
+│   ├── enc_service.dart             # AES (encrypt package + crypto SHA-256 key derivation)
+│   └── openai_reply_service.dart    # OpenAI generation + fallback template helper
 │
 ├── theme/                       # Design tokens → ThemeData
 │   ├── design_tokens.dart         # Loads assets/style_tokens.json
@@ -75,7 +77,7 @@ lib/
 │       ├── review_prototype_page.dart # User/Admin prototype shell + dashboard
 │       ├── review_detail_page.dart    # AI generate/edit/approve workspace
 │       ├── review_models.dart         # Review status/tone/entity models
-│       └── review_mock_store.dart     # Local ValueNotifier mock state
+│       └── review_mock_store.dart     # Firebase-backed ValueNotifier + callable functions bridge
 │
 ├── util/                        # Helpers (not all wired into main flow)
 │   ├── social_login.dart            # Twitter, Apple, Facebook, Firebase patterns (placeholders)
@@ -244,7 +246,10 @@ Grouped by role as declared in `pubspec.yaml`.
 | Package | Role |
 |---------|------|
 | `twitter_login` | Twitter OAuth flow (see `util/social_login.dart`) |
+| `firebase_core` | Firebase bootstrap for Flutter runtime |
 | `firebase_auth` | Firebase authentication |
+| `cloud_firestore` | Review document updates and persistence |
+| `cloud_functions` | Callable function client (`listReviews`, `addReview`) |
 | `google_sign_in` | Google Sign-In |
 | `sign_in_with_apple` | Sign in with Apple |
 | `flutter_web_auth_2` | OAuth browser flow |
@@ -287,6 +292,7 @@ Other tooling (from `pubspec.yaml`):
 
 1. **`main.dart`**  
    - `WidgetsFlutterBinding.ensureInitialized()`  
+   - `Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)`  
    - `await DesignTokens.load()` (reads `assets/style_tokens.json`)  
    - `setupLocator()` then `await locator.isReady<AppDB>()`  
    - Portrait-only orientation  
@@ -347,6 +353,7 @@ Other tooling (from `pubspec.yaml`):
 - Move **secrets** (AES key, OAuth client IDs) out of source control; use **flutter_secure_storage** or build flavors / `--dart-define`.  
 - Run **codegen** after schema or route changes.  
 - Configure **Firebase**, **Google**, **Facebook**, **Apple**, and **Twitter** consoles to match `social_login.dart` when you enable those flows.
+- Deploy Firebase backend resources (`firebase deploy --only functions,firestore:rules`) after updating `functions/index.js` or `firestore.rules`.
 
 ---
 

@@ -91,8 +91,11 @@ dependencies:
   fluttertoast: ^8.2.4
 
   #social login
+  firebase_core: ^4.2.0
   twitter_login: ^4.4.2
   firebase_auth: ^6.3.0
+  cloud_firestore: ^6.1.0
+  cloud_functions: ^6.0.1
   google_sign_in: ^7.2.0
   sign_in_with_apple: ^7.0.1
   flutter_web_auth_2: ^5.0.0

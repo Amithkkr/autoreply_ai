@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:autoreply_ai/core/db/app_db.dart';
 import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/firebase_options.dart';
 import 'package:autoreply_ai/generated/l10n.dart';
 import 'package:autoreply_ai/router/app_router.dart';
 import 'package:autoreply_ai/theme/app_theme.dart';
 import 'package:autoreply_ai/theme/design_tokens.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,6 +18,9 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       await DesignTokens.load();
       await setupLocator();

@@ -14,8 +14,9 @@ description: >-
 2. **Data** — `lib/data/` — `remote/` (Retrofit), `model/`, `repository/` (abstract), `repository_impl/`.
 3. **Core** — `lib/core/` — `locator`, `api` (Dio module, interceptors, `BaseResponse`), `db` (`AppDB` / Hive), `exceptions`.
 4. **Router** — `lib/router/app_router.dart` + generated `app_router.gr.dart`.
-5. **Services** — `lib/service/` — cross-cutting (e.g. `EncService`).
+5. **Services** — `lib/service/` — cross-cutting (e.g. `EncService`, `OpenAIReplyService`).
 6. **Shared** — `lib/widget/`, `lib/util/`.
+7. **Firebase backend** — root `functions/` (Cloud Functions JS), `firebase.json`, `firestore.rules`, `.firebaserc`.
 
 ## Dependency injection
 
@@ -39,6 +40,7 @@ description: >-
 - [ ] Retrofit API interface + generated part.
 - [ ] Abstract repo + impl; register impl in `locator.dart`.
 - [ ] MobX store + `Observer` UI under `lib/ui/<feature>/`.
+- [ ] If feature uses Firebase callable functions, define handlers in `functions/index.js`, deploy rules/functions, then wire Flutter through `cloud_functions`.
 
 ## Update this skill when
 

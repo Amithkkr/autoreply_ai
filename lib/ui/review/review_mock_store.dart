@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import 'review_models.dart';
@@ -7,46 +10,51 @@ class ReviewMockStore {
 
   static final ReviewMockStore instance = ReviewMockStore._();
 
-  final ValueNotifier<List<ReviewItem>>
-  reviews = ValueNotifier<List<ReviewItem>>([
-    ReviewItem(
-      id: 'rvw-1001',
-      authorName: 'Aarav',
-      comment:
-          'Loved the overall experience. Delivery was quick and support was very polite.',
-      rating: 5,
-      createdAt: DateTime.now().subtract(const Duration(hours: 4)),
-      status: ReviewStatus.pending,
-    ),
-    ReviewItem(
-      id: 'rvw-1002',
-      authorName: 'Mira',
-      comment:
-          'The quality is good, but packaging can be improved. It arrived slightly damaged.',
-      rating: 3,
-      createdAt: DateTime.now().subtract(const Duration(hours: 2)),
-      status: ReviewStatus.generated,
-      selectedTone: ReplyTone.friendly,
-      aiDraft:
-          'Thanks for your honest feedback, Mira. We are glad you liked the quality and we are sorry about the packaging issue. We are improving our packaging process right away.',
-    ),
-    ReviewItem(
-      id: 'rvw-1003',
-      authorName: 'Chris',
-      comment: 'Great service. Team resolved my issue within minutes.',
-      rating: 5,
-      createdAt: DateTime.now().subtract(const Duration(days: 1)),
-      status: ReviewStatus.approved,
-      selectedTone: ReplyTone.professional,
-      aiDraft:
-          'Thank you for sharing your experience. We are happy our team could resolve your issue quickly.',
-      finalReply:
-          'Thank you for sharing your experience, Chris. We are happy our team could resolve your issue quickly. Your feedback means a lot to us.',
-      approvedAt: DateTime.now().subtract(const Duration(hours: 18)),
-    ),
-  ]);
+  final ValueNotifier<List<ReviewItem>> reviews = ValueNotifier<List<ReviewItem>>(
+    const [],
+  );
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFunctions _functions = FirebaseFunctions.instance;
+
+  bool _isBootstrapped = false;
+  bool _isBootstrapping = false;
 
   List<ReviewItem> get all => reviews.value;
+
+  Future<void> bootstrap() async {
+    if (_isBootstrapped || _isBootstrapping) return;
+    _isBootstrapping = true;
+    try {
+      await _ensureAnonymousAuth();
+      await refreshReviews();
+      _isBootstrapped = true;
+    } catch (error) {
+      debugPrint('Review store bootstrap failed: $error');
+    } finally {
+      _isBootstrapping = false;
+    }
+  }
+
+  Future<void> refreshReviews() async {
+    try {
+      final callable = _functions.httpsCallable('listReviews');
+      final result = await callable.call();
+      final rawReviews = (result.data as List<dynamic>? ?? const <dynamic>[]);
+      final parsed = rawReviews
+          .whereType<Map<dynamic, dynamic>>()
+          .map(
+            (item) => ReviewItem.fromJson(
+              Map<String, dynamic>.from(item),
+            ),
+          )
+          .toList(growable: false);
+      reviews.value = parsed;
+    } catch (error) {
+      debugPrint('Failed loading reviews from Firebase Functions: $error');
+    }
+  }
 
   ReviewItem? byId(String id) {
     for (final review in reviews.value) {
@@ -55,55 +63,91 @@ class ReviewMockStore {
     return null;
   }
 
-  void submitReview({
+  Future<void> submitReview({
     required String authorName,
     required String comment,
     int? rating,
-  }) {
+  }) async {
+    await _ensureAnonymousAuth();
+    final callable = _functions.httpsCallable('addReview');
+    final result = await callable.call(<String, dynamic>{
+      'authorName': authorName,
+      'comment': comment,
+      'rating': rating,
+    });
+
+    final reviewData = result.data;
+    if (reviewData is Map<dynamic, dynamic>) {
+      final created = ReviewItem.fromJson(
+        Map<String, dynamic>.from(reviewData),
+      );
+      reviews.value = [created, ...reviews.value];
+    } else {
+      await refreshReviews();
+    }
+  }
+
+  Future<void> updateTone(String id, ReplyTone tone) async {
+    await _update(
+      id,
+      (item) => item.copyWith(selectedTone: tone),
+      {'selectedTone': tone.name},
+    );
+  }
+
+  Future<void> generateReply(String id) async {
+    final review = byId(id);
+    if (review == null) return;
+    final draft = _buildReply(review.comment, review.selectedTone);
+    await setGeneratedReply(id, draft);
+  }
+
+  Future<void> updateDraft(String id, String draft) async {
+    await _update(id, (item) => item.copyWith(aiDraft: draft), {'aiDraft': draft});
+  }
+
+  Future<void> setGeneratedReply(String id, String draft) async {
+    await _update(id, (item) {
+      return item.copyWith(status: ReviewStatus.generated, aiDraft: draft);
+    }, <String, dynamic>{'status': ReviewStatus.generated.name, 'aiDraft': draft});
+  }
+
+  Future<void> approveReply(String id) async {
     final now = DateTime.now();
-    final review = ReviewItem(
-      id: 'rvw-${now.microsecondsSinceEpoch}',
-      authorName: authorName,
-      comment: comment,
-      rating: rating,
-      createdAt: now,
-    );
-    reviews.value = [review, ...reviews.value];
-  }
-
-  void updateTone(String id, ReplyTone tone) {
-    _update(id, (item) => item.copyWith(selectedTone: tone));
-  }
-
-  void generateReply(String id) {
-    _update(
-      id,
-      (item) => item.copyWith(
-        status: ReviewStatus.generated,
-        aiDraft: _buildReply(item.comment, item.selectedTone),
-      ),
-    );
-  }
-
-  void updateDraft(String id, String draft) {
-    _update(id, (item) => item.copyWith(aiDraft: draft));
-  }
-
-  void approveReply(String id) {
-    _update(
-      id,
-      (item) => item.copyWith(
+    await _update(id, (item) {
+      return item.copyWith(
         status: ReviewStatus.approved,
         finalReply: item.aiDraft?.trim(),
-        approvedAt: DateTime.now(),
-      ),
-    );
+        approvedAt: now,
+      );
+    }, <String, dynamic>{
+      'status': ReviewStatus.approved.name,
+      'finalReply': byId(id)?.aiDraft?.trim(),
+      'approvedAt': now.toIso8601String(),
+    });
   }
 
-  void _update(String id, ReviewItem Function(ReviewItem item) mapper) {
-    reviews.value = reviews.value
+  Future<void> _update(
+    String id,
+    ReviewItem Function(ReviewItem item) mapper,
+    Map<String, dynamic> patch,
+  ) async {
+    final next = reviews.value
         .map((item) => item.id == id ? mapper(item) : item)
         .toList(growable: false);
+    reviews.value = next;
+    await _firestore.collection('reviews').doc(id).set(
+          <String, dynamic>{
+            ...patch,
+            'updatedAt': DateTime.now().toIso8601String(),
+          },
+          SetOptions(merge: true),
+        );
+  }
+
+  Future<void> _ensureAnonymousAuth() async {
+    if (_auth.currentUser != null) return;
+    await _auth.signInAnonymously();
   }
 
   String _buildReply(String review, ReplyTone tone) {

@@ -6,6 +6,7 @@ import 'package:autoreply_ai/data/model/response/user_profile_response.dart';
 import 'package:autoreply_ai/data/repository_impl/auth_repo_impl.dart';
 import 'package:autoreply_ai/router/app_router.dart';
 import 'package:autoreply_ai/service/enc_service.dart';
+import 'package:autoreply_ai/service/openai_reply_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,9 +34,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(
     () => EncService(aesKey: "WQXy4CzZyUyJNOr5z5mvcR13dwxBGKnr"),
   );
+  locator.registerLazySingleton(OpenAIReplyService.new);
 
   /// register repositories implementation
-  locator.registerFactory<AuthRepoImpl>(
-    () => AuthRepoImpl(authApi: locator()),
-  );
+  locator.registerFactory<AuthRepoImpl>(() => AuthRepoImpl(authApi: locator()));
 }

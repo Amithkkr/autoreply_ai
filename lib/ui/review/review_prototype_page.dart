@@ -18,6 +18,12 @@ class _ReviewPrototypePageState extends State<ReviewPrototypePage> {
   int _index = 0;
 
   @override
+  void initState() {
+    super.initState();
+    ReviewMockStore.instance.bootstrap();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnimatedSwitcher(
@@ -212,10 +218,10 @@ class _UserReviewScreenState extends State<_UserReviewScreen> {
     );
   }
 
-  void _submitReview() {
+  Future<void> _submitReview() async {
     final comment = _reviewController.text.trim();
     if (comment.isEmpty) return;
-    ReviewMockStore.instance.submitReview(
+    await ReviewMockStore.instance.submitReview(
       authorName: _nameController.text.trim().isEmpty
           ? 'Guest User'
           : _nameController.text.trim(),
@@ -440,8 +446,10 @@ class _AdminReviewCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: review.status == ReviewStatus.pending
-                        ? () {
-                            ReviewMockStore.instance.generateReply(review.id);
+                        ? () async {
+                            await ReviewMockStore.instance.generateReply(
+                              review.id,
+                            );
                           }
                         : null,
                     child: const Text('Generate Reply'),

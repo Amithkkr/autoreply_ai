@@ -27,6 +27,25 @@ class ReviewItem {
   final String? finalReply;
   final DateTime? approvedAt;
 
+  factory ReviewItem.fromJson(Map<String, dynamic> json) {
+    return ReviewItem(
+      id: (json['id'] as String?) ?? '',
+      authorName: (json['authorName'] as String?) ?? 'Guest User',
+      comment: (json['comment'] as String?) ?? '',
+      createdAt:
+          DateTime.tryParse((json['createdAt'] as String?) ?? '') ??
+          DateTime.now(),
+      rating: (json['rating'] as num?)?.toInt(),
+      status: _reviewStatusFromString((json['status'] as String?) ?? 'pending'),
+      selectedTone: _replyToneFromString(
+        (json['selectedTone'] as String?) ?? 'professional',
+      ),
+      aiDraft: json['aiDraft'] as String?,
+      finalReply: json['finalReply'] as String?,
+      approvedAt: DateTime.tryParse((json['approvedAt'] as String?) ?? ''),
+    );
+  }
+
   ReviewItem copyWith({
     String? id,
     String? authorName,
@@ -52,4 +71,33 @@ class ReviewItem {
       approvedAt: approvedAt ?? this.approvedAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'authorName': authorName,
+      'comment': comment,
+      'createdAt': createdAt.toIso8601String(),
+      'rating': rating,
+      'status': status.name,
+      'selectedTone': selectedTone.name,
+      'aiDraft': aiDraft,
+      'finalReply': finalReply,
+      'approvedAt': approvedAt?.toIso8601String(),
+    };
+  }
+}
+
+ReviewStatus _reviewStatusFromString(String value) {
+  return ReviewStatus.values.firstWhere(
+    (status) => status.name == value,
+    orElse: () => ReviewStatus.pending,
+  );
+}
+
+ReplyTone _replyToneFromString(String value) {
+  return ReplyTone.values.firstWhere(
+    (tone) => tone.name == value,
+    orElse: () => ReplyTone.professional,
+  );
 }

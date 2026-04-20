@@ -1,0 +1,37 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ai-exam-c2f34",
+          "appId": "1:544864422423:android:446c12d330b5b21e652a52",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "ai-exam-c2f34",
+          "appId": "1:544864422423:ios:482e98668ac9863c652a52",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ai-exam-c2f34",
+          "configurations": {
+            "android": "1:544864422423:android:446c12d330b5b21e652a52",
+            "ios": "1:544864422423:ios:482e98668ac9863c652a52",
+            "web": "1:544864422423:web:596a164a0e54aa32652a52"
+          }
+        }
+      }
+    }
+  }
+}
