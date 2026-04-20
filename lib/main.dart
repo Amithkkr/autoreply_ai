@@ -30,9 +30,7 @@ Future<void> main() async {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
-      ]).then(
-        (value) => runApp(MyApp(appRouter: locator<AppRouter>())),
-      );
+      ]).then((value) => runApp(MyApp(appRouter: locator<AppRouter>())));
     },
     (error, stack) {
       if (!kReleaseMode) {
@@ -54,6 +52,8 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp.router(
         title: 'AutoReply AI',
         theme: buildAppTheme(DesignTokens.instance),
+        darkTheme: buildDarkAppTheme(DesignTokens.instance),
+        themeMode: ThemeMode.light,
         debugShowCheckedModeBanner: false,
         routerConfig: appRouter.config(),
         localizationsDelegates: const [

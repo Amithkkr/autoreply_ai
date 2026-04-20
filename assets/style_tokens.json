@@ -1,20 +1,20 @@
 {
   "colors": {
-    "primary": "#00C444",
+    "primary": "#3C57BC",
     "onPrimary": "#FFFFFF",
-    "secondary": "#F0FFF5",
-    "onSecondary": "#007A33",
-    "tertiary": "#00A86B",
+    "secondary": "#799DFA",
+    "onSecondary": "#FFFFFF",
+    "tertiary": "#00BA72",
     "onTertiary": "#FFFFFF",
-    "background": "#FFFFFF",
-    "onBackground": "#0F1722",
+    "background": "#FFFFFE",
+    "onBackground": "#2D2F29",
     "surface": "#FFFFFF",
-    "onSurface": "#0F1722",
-    "surfaceVariant": "#FBFBFB",
-    "onSurfaceVariant": "#9AA0A6",
-    "outline": "#E1E4E8",
-    "outlineVariant": "#00000014",
-    "error": "#FF3B30",
+    "onSurface": "#2D2F29",
+    "surfaceVariant": "#F3F0EC",
+    "onSurfaceVariant": "#605E56",
+    "outline": "#DCD6D1",
+    "outlineVariant": "#E7E1DC",
+    "error": "#B3261E",
     "onError": "#FFFFFF"
   },
   "spacing": {
@@ -22,61 +22,69 @@
     "s": 8.0,
     "m": 16.0,
     "l": 24.0,
-    "xl": 32.0,
-    "xxl": 48.0
+    "xl": 40.0,
+    "xxl": 64.0
   },
   "radius": {
-    "s": 6.0,
-    "md": 8.0,
-    "lg": 10.0,
-    "xl": 12.0,
-    "xxl": 24.0,
+    "s": 8.0,
+    "md": 16.0,
+    "lg": 16.0,
+    "xl": 24.0,
+    "xxl": 32.0,
     "full": 999.0
   },
   "typography": {
     "displayLg": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 28.0,
       "fontWeight": "bold",
       "letterSpacing": -0.5,
       "height": 1.1
     },
     "displayMd": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 24.0,
-      "fontWeight": "bold",
-      "letterSpacing": -0.5,
+      "fontWeight": "w600",
+      "letterSpacing": 0,
       "height": 1.2
     },
     "headlineSm": {
-      "fontFamily": "Inter",
-      "fontSize": 20.0,
-      "fontWeight": "bold"
+      "fontFamily": "Trustpilot Sans",
+      "fontSize": 18.0,
+      "fontWeight": "w600",
+      "height": 1.2
     },
     "titleLg": {
-      "fontFamily": "Inter",
-      "fontSize": 22.0,
-      "fontWeight": "w700"
+      "fontFamily": "Trustpilot Sans",
+      "fontSize": 18.0,
+      "fontWeight": "w600",
+      "height": 1.2
     },
     "titleMd": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 16.0,
-      "fontWeight": "w600"
+      "fontWeight": "w500",
+      "height": 1.2
     },
     "bodyLg": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 16.0,
-      "fontWeight": "normal"
+      "fontWeight": "normal",
+      "height": 1.2
     },
     "bodyMd": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 14.0,
-      "fontWeight": "normal"
+      "fontWeight": "w500",
+      "height": 1.4,
+      "letterSpacing": 0.5
     },
     "labelMd": {
-      "fontFamily": "Inter",
+      "fontFamily": "Trustpilot Sans",
       "fontSize": 12.0,
-      "fontWeight": "w500"
+      "fontWeight": "normal",
+      "height": 1.2,
+      "letterSpacing": 0.5
     }
   }
 }

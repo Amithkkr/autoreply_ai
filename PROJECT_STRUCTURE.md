@@ -17,7 +17,7 @@ This document describes the **autoreply_ai** app: folder layout, **pubspec** lib
 | Local storage | Hive CE |
 | DI | get_it |
 
-The sample flow is a **login screen** that calls a **Retrofit-defined** sign-in API through a **repository**, with **MobX** driving loading and error state.
+The current prototype flow focuses on an **AI-powered review and reply UI** with separate User/Admin experiences and mock local state.
 
 ---
 
@@ -63,7 +63,7 @@ lib/
 │
 ├── theme/                       # Design tokens → ThemeData
 │   ├── design_tokens.dart         # Loads assets/style_tokens.json
-│   ├── app_theme.dart             # buildAppTheme() Material 3 + Google Fonts Inter
+│   ├── app_theme.dart             # buildAppTheme()/buildDarkAppTheme() with Manrope + M3
 │   └── theme_context.dart         # context.designTokens extension
 │
 ├── ui/                          # Feature-oriented UI
@@ -71,6 +71,11 @@ lib/
 │       ├── login_page.dart          # @RoutePage; Observer + button triggers login
 │       ├── login_store.dart         # MobX store: login action → authRepo
 │       └── login_store.g.dart       # Generated MobX code
+│   └── review/
+│       ├── review_prototype_page.dart # User/Admin prototype shell + dashboard
+│       ├── review_detail_page.dart    # AI generate/edit/approve workspace
+│       ├── review_models.dart         # Review status/tone/entity models
+│       └── review_mock_store.dart     # Local ValueNotifier mock state
 │
 ├── util/                        # Helpers (not all wired into main flow)
 │   ├── social_login.dart            # Twitter, Apple, Facebook, Firebase patterns (placeholders)
@@ -109,8 +114,8 @@ lib/
 |-------|------|
 | `assets/style_tokens.json` | Source of truth for palette, spacing keys (`xs`–`xxl`), corner radii, named text styles. |
 | `lib/theme/design_tokens.dart` | `DesignTokens.load()` after `WidgetsFlutterBinding.ensureInitialized()`; exposes `colors`, `spacing`, `radius`, `typography`. |
-| `lib/theme/app_theme.dart` | `buildAppTheme(DesignTokens)` — `ColorScheme`, buttons, inputs, cards; **Inter** via `google_fonts`. |
-| `lib/main.dart` | Calls `await DesignTokens.load()` then uses `theme: buildAppTheme(DesignTokens.instance)`. |
+| `lib/theme/app_theme.dart` | `buildAppTheme(DesignTokens)` + `buildDarkAppTheme(DesignTokens)` with Royal/Sky blue palette and **Manrope**. |
+| `lib/main.dart` | Calls `await DesignTokens.load()` then uses `theme` + `darkTheme` from the app theme builders. |
 
 **Rotunda** remains available from `pubspec.yaml` fonts for explicit use (e.g. marketing headings).
 
@@ -286,7 +291,7 @@ Other tooling (from `pubspec.yaml`):
    - `setupLocator()` then `await locator.isReady<AppDB>()`  
    - Portrait-only orientation  
    - `runApp(MyApp(appRouter: locator<AppRouter>()))`  
-   - `ScreenUtilInit` wraps `MaterialApp.router` with `routerConfig`, **`buildAppTheme(DesignTokens.instance)`**, and localization delegates (`S.delegate` + Flutter globals).
+  - `ScreenUtilInit` wraps `MaterialApp.router` with `routerConfig`, **light + dark theme builders**, and localization delegates (`S.delegate` + Flutter globals).
 
 2. **`setupLocator()`** (`lib/core/locator/locator.dart`)  
    - Initializes **Hive** on disk (`path_provider`; Android vs iOS directory).  
