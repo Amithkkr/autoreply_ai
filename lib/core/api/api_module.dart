@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_demo_structure/core/api/api_end_points.dart';
-import 'package:flutter_demo_structure/core/api/interceptor/custom_interceptors.dart';
-import 'package:flutter_demo_structure/core/api/interceptor/internet_interceptor.dart';
-import 'package:flutter_demo_structure/core/locator/locator.dart';
-import 'package:flutter_demo_structure/data/remote/auth_api.dart';
+import 'package:autoreply_ai/core/api/api_end_points.dart';
+import 'package:autoreply_ai/core/api/interceptor/custom_interceptors.dart';
+import 'package:autoreply_ai/core/api/interceptor/internet_interceptor.dart';
+import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/data/remote/auth_api.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiModule {

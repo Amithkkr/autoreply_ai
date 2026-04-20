@@ -1,7 +1,7 @@
 ---
 name: flutter-structure-widget
 description: >-
-  Shared widget and utility conventions for flutter_demo_structure including
+  Shared widget and utility conventions for autoreply_ai including
   LoadingWidget, CustomErrorWidget, toast messaging, validators, and common
   helpers. Use when adding reusable UI primitives under lib/widget or lib/util.
 ---

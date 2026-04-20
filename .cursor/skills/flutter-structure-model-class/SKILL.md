@@ -1,7 +1,7 @@
 ---
 name: flutter-structure-model-class
 description: >-
-  Request and response model conventions for flutter_demo_structure using
+  Request and response model conventions for autoreply_ai using
   json_serializable, BaseResponse<T>, and optional Hive CE adapters. Use when
   creating or editing API models under lib/data/model or core/base_response.
 ---

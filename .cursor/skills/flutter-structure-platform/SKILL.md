@@ -2,7 +2,7 @@
 name: flutter-structure-platform
 description: >-
   iOS CocoaPods, Flutter xcconfig overrides, Android compileSdk, and path-with-space
-  pitfalls for flutter_demo_structure. Use when editing ios/, android/, or Xcode/Gradle build failures.
+  pitfalls for autoreply_ai. Use when editing ios/, android/, or Xcode/Gradle build failures.
 ---
 
 # Platform & build

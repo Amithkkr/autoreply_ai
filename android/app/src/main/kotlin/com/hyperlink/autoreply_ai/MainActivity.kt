@@ -1,4 +1,4 @@
-package com.hyperlink.flutter_demo_structure
+package com.hyperlink.autoreply_ai
 
 import io.flutter.embedding.android.FlutterActivity
 

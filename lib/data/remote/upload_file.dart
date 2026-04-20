@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_structure/generated/l10n.dart';
+import 'package:autoreply_ai/generated/l10n.dart';
 import 'package:http/http.dart' as http;
 
 class UploadFile {

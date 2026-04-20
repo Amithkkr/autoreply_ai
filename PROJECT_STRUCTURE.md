@@ -1,6 +1,6 @@
 # Flutter Demo Structure — Project Documentation
 
-This document describes the **flutter_demo_structure** app: folder layout, **pubspec** libraries, and how the main pieces are wired together.
+This document describes the **autoreply_ai** app: folder layout, **pubspec** libraries, and how the main pieces are wired together.
 
 ---
 
@@ -8,7 +8,7 @@ This document describes the **flutter_demo_structure** app: folder layout, **pub
 
 | Item | Value |
 |------|--------|
-| Package name | `flutter_demo_structure` |
+| Package name | `autoreply_ai` |
 | Dart SDK | `>=3.8.0 <4.0.0` |
 | UI toolkit | Flutter (Material 3) |
 | State (example screen) | MobX |

@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_structure/generated/l10n.dart';
+import 'package:autoreply_ai/generated/l10n.dart';
 
 class PaymentCard {
   CardType? type;

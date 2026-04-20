@@ -1,12 +1,12 @@
 ---
 name: flutter-structure-architecture
 description: >-
-  Layered architecture for flutter_demo_structure: get_it locator, core API/Dio,
+  Layered architecture for autoreply_ai: get_it locator, core API/Dio,
   repositories, MobX UI stores, auto_route. Use when adding features, APIs, repos,
   or changing lib/core or lib/data layout.
 ---
 
-# Architecture (flutter_demo_structure)
+# Architecture (autoreply_ai)
 
 ## Layers
 

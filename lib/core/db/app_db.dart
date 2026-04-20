@@ -1,5 +1,5 @@
-import 'package:flutter_demo_structure/core/locator/locator.dart';
-import 'package:flutter_demo_structure/data/model/response/user_profile_response.dart';
+import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/data/model/response/user_profile_response.dart';
 import 'package:hive_ce/hive.dart';
 
 class AppDB {

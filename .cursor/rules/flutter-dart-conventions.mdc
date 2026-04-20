@@ -7,7 +7,7 @@ alwaysApply: false
 # Flutter / Dart conventions
 
 - **SDK**: `>=3.8.0 <4.0.0` — use null safety, prefer `final`, avoid `dynamic` unless JSON boundaries.
-- **Imports**: `package:flutter_demo_structure/...` for app code; group `dart:`, `package:`, relative.
+- **Imports**: `package:autoreply_ai/...` for app code; group `dart:`, `package:`, relative.
 - **Async `main`**: `WidgetsFlutterBinding.ensureInitialized()` first, then `await DesignTokens.load()`, `await setupLocator()`, `await locator.isReady<AppDB>()` before `runApp`.
 - **State**: MobX for feature stores — `Observer` for reactive UI; keep API calls in `@action` methods, not in `build`.
 - **Navigation**: `auto_route` only — `context.router.push` / `replace`; route classes from `app_router.gr.dart`.

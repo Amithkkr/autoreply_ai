@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter_demo_structure/core/locator/locator.dart';
+import 'package:autoreply_ai/core/locator/locator.dart';
 
 class EncService {
   final String aesKey;

@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter_demo_structure/core/api/api_module.dart';
-import 'package:flutter_demo_structure/core/db/app_db.dart';
-import 'package:flutter_demo_structure/data/model/response/user_profile_response.dart';
-import 'package:flutter_demo_structure/data/repository_impl/auth_repo_impl.dart';
-import 'package:flutter_demo_structure/router/app_router.dart';
-import 'package:flutter_demo_structure/service/enc_service.dart';
+import 'package:autoreply_ai/core/api/api_module.dart';
+import 'package:autoreply_ai/core/db/app_db.dart';
+import 'package:autoreply_ai/data/model/response/user_profile_response.dart';
+import 'package:autoreply_ai/data/repository_impl/auth_repo_impl.dart';
+import 'package:autoreply_ai/router/app_router.dart';
+import 'package:autoreply_ai/service/enc_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';

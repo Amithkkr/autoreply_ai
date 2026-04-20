@@ -1,7 +1,7 @@
 ---
 name: flutter-structure-master
 description: >-
-  Index for flutter_demo_structure layout, design tokens, codegen, and iOS/Android
+  Index for autoreply_ai layout, design tokens, codegen, and iOS/Android
   build conventions. Use when onboarding, refactoring folders, changing theme or
   assets, or when the user asks about project structure, skills, or keeping docs in sync.
 ---
@@ -46,5 +46,5 @@ When you change the project in ways below, **update the matching artifacts** in 
 
 ## Package
 
-- Name: `flutter_demo_structure`
+- Name: `autoreply_ai`
 - Entry: `lib/main.dart` → `DesignTokens.load()` → `setupLocator()` → `MaterialApp.router`

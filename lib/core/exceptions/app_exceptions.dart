@@ -1,4 +1,4 @@
-import 'package:flutter_demo_structure/generated/l10n.dart';
+import 'package:autoreply_ai/generated/l10n.dart';
 
 class AppException implements Exception {
   final String? message;

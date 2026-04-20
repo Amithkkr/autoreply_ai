@@ -1,11 +1,11 @@
 ---
-description: Always-on reminders for flutter_demo_structure (docs sync + safety)
+description: Always-on reminders for autoreply_ai (docs sync + safety)
 alwaysApply: true
 ---
 
 # Core reminders
 
-- Package name: **flutter_demo_structure**. Match imports and file paths to the existing layered layout (`ui` / `data` / `core` / `router` / `theme`).
+- Package name: **autoreply_ai**. Match imports and file paths to the existing layered layout (`ui` / `data` / `core` / `router` / `theme`).
 - After structural or dependency changes: refresh **PROJECT_STRUCTURE.md** and the relevant **`.cursor/skills/flutter-structure-*`** file (see `.cursor/skills/flutter-structure-master/SKILL.md`).
 - Do not commit secrets (AES keys, OAuth client secrets); use secure storage or build-time defines.
 - Regenerate `*.g.dart` / `*.gr.dart` with **build_runner** after annotation changes — never hand-edit generated Dart.

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter_demo_structure/core/locator/locator.dart';
-import 'package:flutter_demo_structure/ui/login/login_page.dart';
+import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/ui/login/login_page.dart';
 
 part 'app_router.gr.dart';
 

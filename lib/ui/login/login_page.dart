@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Structure Test'),
+        title: const Text('AutoReply AI'),
       ),
       body: Center(
         child: Padding(

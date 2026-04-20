@@ -2,7 +2,7 @@
 name: flutter-structure-codegen
 description: >-
   build_runner, MobX, Retrofit, json_serializable, auto_route, Hive CE generators,
-  flutter_gen, intl for flutter_demo_structure. Use when touching *.g.dart files,
+  flutter_gen, intl for autoreply_ai. Use when touching *.g.dart files,
   annotations, or adding generated APIs.
 ---
 

@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.hyperlink.flutter_demo_structure"
+    namespace "com.hyperlink.autoreply_ai"
     compileSdkVersion 36
 
     sourceSets {
@@ -31,7 +31,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hyperlink.flutter_demo_structure"
+        applicationId "com.hyperlink.autoreply_ai"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()

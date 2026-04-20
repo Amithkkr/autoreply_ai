@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_demo_structure/core/db/app_db.dart';
-import 'package:flutter_demo_structure/core/locator/locator.dart';
-import 'package:flutter_demo_structure/generated/l10n.dart';
-import 'package:flutter_demo_structure/router/app_router.dart';
-import 'package:flutter_demo_structure/theme/app_theme.dart';
-import 'package:flutter_demo_structure/theme/design_tokens.dart';
+import 'package:autoreply_ai/core/db/app_db.dart';
+import 'package:autoreply_ai/core/locator/locator.dart';
+import 'package:autoreply_ai/generated/l10n.dart';
+import 'package:autoreply_ai/router/app_router.dart';
+import 'package:autoreply_ai/theme/app_theme.dart';
+import 'package:autoreply_ai/theme/design_tokens.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) => MaterialApp.router(
-        title: 'Flutter Structure Test',
+        title: 'AutoReply AI',
         theme: buildAppTheme(DesignTokens.instance),
         debugShowCheckedModeBanner: false,
         routerConfig: appRouter.config(),
